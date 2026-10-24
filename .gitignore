@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# Next.js generated files
+.next/
+out/
+build/
+
+# Vercel
+.vercel/
+
+# Environment secrets
+.env*
+!.env.example
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Editor and operating system files
+.vscode/
+.DS_Store
+Thumbs.db
