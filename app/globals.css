@@ -1988,7 +1988,7 @@ button {
 }
 
 .collection-masthead-luxe .collection-title-row h1 {
-  color: #ffffff;
+  color: #C9A45C;
 }
 
 .collection-masthead-luxe .collection-title-row p {
@@ -2006,10 +2006,11 @@ button {
   gap: 7px;
   width: 102px;
   height: 102px;
-  border: 1.5px solid #dfc49a;
-  border-radius: 50%;
-  background: transparent;
-  color: #dfc49a;
+  aspect-ratio: 1 / 1;
+  border: 1px solid #C9A45C;
+  border-radius: 2px;
+  background: #111111;
+  color: #C9A45C;
   font-size: 7.5px;
   font-weight: 600;
   letter-spacing: .18em;
@@ -2017,10 +2018,11 @@ button {
   line-height: 1.45;
   box-sizing: border-box;
   flex-shrink: 0;
+  padding: 10px;
 }
 
 .luxe-stamp svg {
-  color: #dfc49a;
+  color: #C9A45C;
   width: 20px;
   height: 20px;
 }
@@ -7614,14 +7616,22 @@ button {
   }
 
   .luxe-stamp {
-    width: 72px;
-    height: 72px;
+    width: 76px;
+    height: 76px;
+    aspect-ratio: 1 / 1;
+    border: 1px solid #C9A45C;
+    border-radius: 2px;
+    background: #111111;
+    color: #C9A45C;
     font-size: 6px;
-    flex-shrink: 0
+    flex-shrink: 0;
+    padding: 8px;
   }
 
   .luxe-stamp svg {
-    width: 17px
+    color: #C9A45C;
+    width: 15px;
+    height: 15px;
   }
 
   .collection-category-chips {
@@ -10733,7 +10743,7 @@ button {
 }
 
 .route-screen-luxe .collection-masthead-luxe .collection-title-row h1 {
-  color: #ffffff;
+  color: #C9A45C;
 }
 
 .route-screen-luxe .collection-masthead-luxe .collection-title-row p {
@@ -10746,18 +10756,21 @@ button {
 .route-screen-luxe .collection-masthead-luxe .luxe-stamp {
   width: 102px;
   height: 102px;
-  border: 1.5px solid #dfc49a;
-  color: #dfc49a;
-  background: transparent;
+  aspect-ratio: 1 / 1;
+  border: 1px solid #C9A45C;
+  border-radius: 2px;
+  color: #C9A45C;
+  background: #111111;
   gap: 7px;
   font-size: 7.5px;
   font-weight: 600;
   letter-spacing: .18em;
   line-height: 1.45;
+  padding: 10px;
 }
 
 .route-screen-luxe .collection-masthead-luxe .luxe-stamp svg {
-  color: #dfc49a;
+  color: #C9A45C;
   width: 20px;
   height: 20px;
 }
@@ -11230,14 +11243,20 @@ button {
   .route-screen-luxe .collection-masthead-luxe .luxe-stamp {
     width: 76px;
     height: 76px;
-    border-width: 1.5px;
+    aspect-ratio: 1 / 1;
+    border: 1px solid #C9A45C;
+    border-radius: 2px;
+    background: #111111;
+    color: #C9A45C;
     font-size: 6px;
     gap: 4px;
     letter-spacing: .16em;
+    padding: 8px;
   }
 
   .collection-masthead-luxe .luxe-stamp svg,
   .route-screen-luxe .collection-masthead-luxe .luxe-stamp svg {
+    color: #C9A45C;
     width: 15px;
     height: 15px;
   }
