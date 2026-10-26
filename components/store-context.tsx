@@ -27,6 +27,7 @@ type StoreContextType = {
   toggleWishlist: (productId: string) => void;
   removeFromCart: (productId: string, size: string) => void;
   updateCartQuantity: (productId: string, size: string, quantity: number) => void;
+  initialSplashDone: boolean; setInitialSplashDone: React.Dispatch<React.SetStateAction<boolean>>;
   cartCount: number;
   cartSubtotal: number;
 };
@@ -50,6 +51,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [orders, setOrders] = useState<Order[]>(INITIAL_ORDERS as Order[]);
   const [reviews, setReviews] = useState<Review[]>(INITIAL_REVIEWS as Review[]);
   const [adminAuthed, setAdminAuthed] = useState(false);
+  const [initialSplashDone, setInitialSplashDone] = useState(false);
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
@@ -131,9 +133,9 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     hydrated, products, setProducts, heroSlides, setHeroSlides, categories, setCategories,
     settings, setSettings, cart, setCart, wishlist, setWishlist, leads, setLeads, orders, setOrders,
     reviews, setReviews, adminAuthed, setAdminAuthed, addToCart, toggleWishlist, removeFromCart,
-    updateCartQuantity, cartCount, cartSubtotal,
+    updateCartQuantity, cartCount, cartSubtotal, initialSplashDone, setInitialSplashDone,
   }), [hydrated, products, heroSlides, categories, settings, cart, wishlist, leads, orders, reviews, adminAuthed,
-    addToCart, toggleWishlist, removeFromCart, updateCartQuantity, cartCount, cartSubtotal]);
+    addToCart, toggleWishlist, removeFromCart, updateCartQuantity, cartCount, cartSubtotal, initialSplashDone, setInitialSplashDone]);
 
   return <StoreContext.Provider value={value}>{children}</StoreContext.Provider>;
 }

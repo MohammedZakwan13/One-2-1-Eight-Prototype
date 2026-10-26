@@ -57,7 +57,28 @@ function RouteLink({ href, children, className, onClick, title, target }: { href
 }
 
 function MovingLoader({ initial = false }: { initial?: boolean } = {}) {
-  return <div className={`route-loader${initial ? ' initial-route-loader' : ''}`} role="status" aria-live="polite" aria-label={initial ? 'Loading ONE 2 1 EIGHT' : 'Loading next page'}><div className="loader-orbit"><span><Shirt size={20} /></span><span><ShoppingBag size={17} /></span><span><Sparkles size={16} /></span></div><p>ONE 2 1 EIGHT</p></div>;
+  if (initial) {
+    return (
+      <div className="initial-splash-screen" role="status" aria-label="ONE 2 1 EIGHT">
+        <div className="splash-lockup">
+          <div className="splash-primary-wrap">
+            <svg className="splash-primary-svg" viewBox="0 0 630 110" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ONETWO">
+              <path fillRule="evenodd" clipRule="evenodd" d="M51 0C82 0 102 24 102 55C102 86 82 110 51 110C20 110 0 86 0 55C0 24 20 0 51 0ZM51 45C68 45 78 49.5 78 55C78 60.5 68 65 51 65C34 65 24 60.5 24 55C24 49.5 34 45 51 45Z" fill="#FFFFFF" />
+              <path d="M106 0H135L174 68V0H202V110H173L134 42V110H106V0Z" fill="#FFFFFF" />
+              <path d="M206 0H286V26H234V44H280V66H234V84H286V110H206V0Z" fill="#FFFFFF" />
+              <path d="M289 0H377V26H347V110H319V26H289V0Z" fill="#FFFFFF" />
+              <path d="M380 0H406L423 72L440 0H464L481 72L498 0H524L494 110H468L452 42L436 110H410L380 0Z" fill="#FFFFFF" />
+              <path fillRule="evenodd" clipRule="evenodd" d="M579 0C610 0 630 24 630 55C630 86 610 110 579 110C548 110 528 86 528 55C528 24 548 0 579 0ZM579 45C596 45 606 49.5 606 55C606 60.5 596 65 579 65C562 65 552 60.5 552 55C552 49.5 562 45 579 45Z" fill="#FFFFFF" />
+            </svg>
+          </div>
+          <div className="splash-secondary-wrap">
+            <span className="splash-secondary-text">1 EIGHT</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  return <div className="route-loader" role="status" aria-live="polite" aria-label="Loading next page"><div className="loader-orbit"><span><Shirt size={20} /></span><span><ShoppingBag size={17} /></span><span><Sparkles size={16} /></span></div><p>ONE 2 1 EIGHT</p></div>;
 }
 
 function Toast({ message }: { message: string }) {
@@ -574,6 +595,8 @@ function AdminApp({ notify }: { notify: (message: string) => void }) {
   return <main className="admin-app"><div className={`admin-sidebar-wrap ${mobileSidebar ? 'is-open' : ''}`}><AdminSidebar activeTab={activeTab} setActiveTab={tab => { setActiveTab(tab); setMobileSidebar(false); }} onLogout={logout} /></div>{mobileSidebar && <button className="admin-mobile-backdrop" aria-label="Close admin menu" onClick={() => setMobileSidebar(false)} />}<section className="admin-main"><header className="admin-topbar"><button className="admin-mobile-menu" onClick={() => setMobileSidebar(!mobileSidebar)} aria-label="Open admin menu"><Menu size={20} /></button><div className="admin-topbar-breadcrumb"><span>WORKSPACE</span><ChevronRight size={13} /><strong>{titleMap[activeTab]}</strong></div><div className="admin-topbar-right"><span className="admin-live-dot" /> <span>Storefront status: <strong>Prototype</strong></span><RouteLink href="/" target="_blank" className="admin-view-store"><ArrowUpRight size={15} /> View store</RouteLink><span className="admin-topbar-avatar">A</span></div></header>{activeTab === 'overview' && <AdminOverview setTab={setActiveTab} />} {activeTab === 'products' && <AdminProducts notify={notify} />} {activeTab === 'content' && <AdminContent notify={notify} />} {activeTab === 'collections' && <AdminCollections notify={notify} />} {activeTab === 'orders' && <AdminOrders notify={notify} />} {activeTab === 'reviews' && <AdminReviews notify={notify} />} {activeTab === 'leads' && <AdminLeads notify={notify} />} {activeTab === 'settings' && <AdminSettings notify={notify} />}<footer className="admin-app-footer"><span>ONE 2 1 EIGHT / COMMERCE STUDIO</span><span>CLIENT PREVIEW BUILD · 1.0.0</span><span>© 2026</span></footer></section></main>;
 }
 
+let globalInitialSplashDone = false;
+
 export default function StoreApp({ initialPath = '/' }: { initialPath?: string }) {
   const pathName = usePathname() || initialPath;
   const path = pathName === '' ? '/' : pathName;
@@ -581,19 +604,32 @@ export default function StoreApp({ initialPath = '/' }: { initialPath?: string }
   const router = useRouter();
   const { toast, notify } = useToast();
   const store = useStore();
+  const { initialSplashDone, setInitialSplashDone } = store;
+  const isInitialEntry = !initialSplashDone && !globalInitialSplashDone && !isAdminPath;
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [transitioning, setTransitioning] = useState(false);
-  const [splashVisible, setSplashVisible] = useState(true);
+  const [splashVisible, setSplashVisible] = useState(isInitialEntry);
   const transitionTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => {
     if (isAdminPath) {
       setSplashVisible(false);
+      setInitialSplashDone(true);
+      globalInitialSplashDone = true;
       return;
     }
-    const splashTimer = window.setTimeout(() => setSplashVisible(false), 450);
+    if (initialSplashDone || globalInitialSplashDone) {
+      if (splashVisible) setSplashVisible(false);
+      return;
+    }
+    const isReduced = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const splashTimer = window.setTimeout(() => {
+      setSplashVisible(false);
+      setInitialSplashDone(true);
+      globalInitialSplashDone = true;
+    }, isReduced ? 1200 : 2750);
     return () => window.clearTimeout(splashTimer);
-  }, [isAdminPath]);
+  }, [isAdminPath, initialSplashDone, setInitialSplashDone, splashVisible]);
   const transition = useCallback(() => {
     setTransitioning(true);
     if (transitionTimer.current) clearTimeout(transitionTimer.current);
@@ -655,5 +691,5 @@ export default function StoreApp({ initialPath = '/' }: { initialPath?: string }
                     path === '/policies/returns' ? <ReturnsPolicyPage onTransition={transition} /> :
                       path === '/size-guide' ? <SizeGuidePage onTransition={transition} /> :
                         <main className="not-found-page"><span className="eyebrow">404 / OFF THE MAP</span><h1>This page took<br /><em>a different route.</em></h1><RouteLink href="/" className="button button-dark" onClick={transition}>BACK TO THE STORE <ArrowRight size={16} /></RouteLink></main>;
-  return <div className="storefront-app"><StoreHeader onSearch={() => setSearchOpen(true)} onMenu={() => setMenuOpen(true)} onTransition={transition} cartCount={bagCount} wishlistCount={wishlistCount} settings={store.settings} /><div key={path} className={`route-screen ${path === '/collections/one-2-1-eight-luxe' ? 'route-screen-luxe' : ''}`}>{body}</div><MobileBottomNav onTransition={transition} cartCount={bagCount} wishlistCount={wishlistCount} /><SideMenu open={menuOpen} close={() => setMenuOpen(false)} categories={store.categories} onTransition={transition} /><SearchOverlay open={searchOpen} close={() => setSearchOpen(false)} onTransition={transition} />{transitioning && <MovingLoader />}{splashVisible && <MovingLoader initial />}<Toast message={toast} /></div>;
+  return <div className="storefront-app"><StoreHeader onSearch={() => setSearchOpen(true)} onMenu={() => setMenuOpen(true)} onTransition={transition} cartCount={bagCount} wishlistCount={wishlistCount} settings={store.settings} /><div key={path} className={`route-screen ${path === '/collections/one-2-1-eight-luxe' ? 'route-screen-luxe' : ''}`}>{body}</div><MobileBottomNav onTransition={transition} cartCount={bagCount} wishlistCount={wishlistCount} /><SideMenu open={menuOpen} close={() => setMenuOpen(false)} categories={store.categories} onTransition={transition} /><SearchOverlay open={searchOpen} close={() => setSearchOpen(false)} onTransition={transition} />{transitioning && !splashVisible && <MovingLoader />}{splashVisible && <MovingLoader initial />}<Toast message={toast} /></div>;
 }

@@ -1798,10 +1798,112 @@ button {
   border-color: #cfc3b3
 }
 
-.route-loader.initial-route-loader {
+/* Initial Wordmark Splash Screen */
+.initial-splash-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #080808;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   pointer-events: auto;
-  background: var(--paper);
-  backdrop-filter: none;
+  animation: splashFadeOut 0.35s cubic-bezier(0.4, 0, 0.2, 1) 2.4s forwards;
+}
+
+.splash-lockup {
+  width: 580px;
+  max-width: 84vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  user-select: none;
+}
+
+.splash-primary-wrap {
+  width: 100%;
+  clip-path: inset(0 100% 0 0);
+  animation: splashWordmarkWrite 1.35s cubic-bezier(0.35, 0.05, 0.25, 1) 0.2s forwards;
+  will-change: clip-path;
+}
+
+.splash-primary-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.splash-secondary-wrap {
+  opacity: 0;
+  transform: translateY(6px);
+  animation: splashSecondaryFadeIn 0.5s cubic-bezier(0.2, 0.8, 0.25, 1) 1.55s forwards;
+  will-change: opacity, transform;
+}
+
+.splash-secondary-text {
+  font-family: var(--font-display);
+  font-size: clamp(14px, 3.2vw, 21px);
+  font-weight: 700;
+  letter-spacing: 0.48em;
+  color: #FFFFFF;
+  text-align: center;
+  white-space: nowrap;
+  display: block;
+  padding-left: 0.48em; /* optical center balance for trailing character letter-spacing */
+}
+
+@keyframes splashWordmarkWrite {
+  0% {
+    clip-path: inset(0 100% 0 0);
+  }
+  100% {
+    clip-path: inset(0 0% 0 0);
+  }
+}
+
+@keyframes splashSecondaryFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes splashFadeOut {
+  0% {
+    opacity: 1;
+    visibility: visible;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .initial-splash-screen {
+    animation: splashFadeOut 0.3s ease 0.9s forwards;
+  }
+  .splash-primary-wrap {
+    clip-path: none;
+    opacity: 0;
+    animation: splashReducedFade 0.5s ease 0.1s forwards;
+  }
+  .splash-secondary-wrap {
+    transform: none;
+    opacity: 0;
+    animation: splashReducedFade 0.5s ease 0.4s forwards;
+  }
+  @keyframes splashReducedFade {
+    to {
+      opacity: 1;
+    }
+  }
 }
 
 .route-loader {
